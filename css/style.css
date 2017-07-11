@@ -1,0 +1,75 @@
+.wrapper, .svg {
+  width: 500px;
+  height: 500px;
+}
+.wrapper {
+  position: relative;
+  background: pink;
+}
+.svg {
+  position: absolute;
+  background: transparent;
+  top: 0;
+  left: 0;
+}
+.gee path {
+  stroke-width: 5;
+  stroke: #000;
+  stroke-linecap: round;
+  fill: none;
+}
+
+
+
+
+.table {
+  position: absolute;
+  border: 1px solid gray;
+  background: #eee;
+}
+.table h3 {
+  border-bottom: 1px solid black;
+  padding: 5px;
+  margin: 0;
+  font-weight: normal;
+}
+
+.table ol {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.table li {
+  display: flex;
+  position: relative;
+}
+.table li span {
+  padding: 5px;
+}
+.table li .key {
+  width: 20px;
+  font-style: italic;
+}
+.table li.pk .key::before{
+  content: 'pk'
+}
+.table li.fk .key::before{
+  content: 'fk'
+}
+.table li .name {
+  font-weight: bold;
+}
+.table li .key,
+.table li .sort {
+  width: 20px;
+  text-align: center;
+}
+.table li .name {
+  margin-right: auto;
+}
+.table li .edit::after {
+  content: 'edit';
+}
+.table li .sort::after {
+  content: "=";
+}
