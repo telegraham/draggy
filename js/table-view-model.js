@@ -32,7 +32,7 @@ TableViewModel.prototype.computeDeltas = function($mouseDownEvent, $mouseUpEvent
 TableViewModel.prototype.drag = function($mouseDownEvent, $mouseMoveEvent){
   var deltas = this.computeDeltas($mouseDownEvent, $mouseMoveEvent)
   //console.log(deltas.join(" "))
-  this.$element.css("transform", "translate3d(" + deltas.join("px, ") +  "px, 0px)")
+  this.$element.css("transform", "translate3d(" + deltas.join("px, ") +  "px, 0px) skewX(-10deg)")
 }
 TableViewModel.prototype.move = function($mouseDownEvent, $mouseUpEvent){
   var deltas = this.computeDeltas($mouseDownEvent, $mouseUpEvent)
