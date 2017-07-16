@@ -21,6 +21,6 @@ Table.prototype.right = function(param){
 }
 
 Table.prototype.move = function(deltaX, deltaY){
-	this._top += deltaY;
-	this._left += deltaX;
+  this._left += deltaX;
+  this._top += deltaY;
 }

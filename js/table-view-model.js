@@ -1,10 +1,47 @@
-function TableViewModel(element, model){
+function TableViewModel(model, element){
 	var _this = this;
   _this.$element = $(element);
 	_this.model = model;
+
+  this.$element.on("mousedown", ".js--moveHandle", function(e){
+    _this.mouseDown.call(_this, e);
+  })
 }
-TableViewModel.prototype.bindMoveHandleMouseDown = function (handler) {
-  this.$element.on("mousedown", ".js--moveHandle", _this.mouseDown)
+
+TableViewModel.prototype.mouseDown = function(mde){
+  var _this = this;
+  $(document).on("mousemove.tabledrag", function(mme){
+    _this.drag.call(_this, mde, mme)
+  }).on("mouseup.tabledrag", function(mue){
+    $(document).off(".tabledrag")
+    _this.move.call(_this, mde, mue);
+  })
+}
+TableViewModel.prototype.computeDeltas = function($mouseDownEvent, $mouseUpEvent){
+  var startX = $mouseDownEvent.clientX;
+  var startY = $mouseDownEvent.clientY;
+
+  var currentX = $mouseUpEvent.clientX;
+  var currentY = $mouseUpEvent.clientY;
+
+  //console.log(startX, startY, currentX, currentY);
+
+  return [currentX - startX, currentY - startY];
+}
+
+TableViewModel.prototype.drag = function($mouseDownEvent, $mouseMoveEvent){
+  var deltas = this.computeDeltas($mouseDownEvent, $mouseMoveEvent)
+  //console.log(deltas.join(" "))
+  this.$element.css("transform", "translate3d(" + deltas.join("px, ") +  "px, 0px)")
+}
+TableViewModel.prototype.move = function($mouseDownEvent, $mouseUpEvent){
+  var deltas = this.computeDeltas($mouseDownEvent, $mouseUpEvent)
+  this.model.move(deltas[0], deltas[1]);
+  this.$element.css({
+    "transform": "",
+    top: this.model.top(),
+    left: this.model.left()
+  });
 }
 
 TableViewModel.toHtml = function(model){
@@ -26,7 +63,7 @@ TableViewModel.toHtml = function(model){
     left: model._left
   })
 
-  table.append("<h3>" + model.name + "</h3>")
+  table.append("<h3 class='js--moveHandle'>" + model.name + "</h3>")
 
   var ol = $("<ol>");
   cols.forEach(function(col){

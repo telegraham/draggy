@@ -87,22 +87,5 @@ TableController.prototype.sample = function(){
 	this.saveTableData(this.tables)
 }
 
-/*TableController.prototype.mouseDown = function($mouseDownEvent){
-	$(document).on("mousemove.tabledrag", function($mouseMoveEvent){
-		_this.drag($mouseDownEvent, $mouseMoveEvent)
-	}).on("mouseup", function($mouseUpEvent){
-		_this.move
-		$(document).off(".tabledrag")
-	})
-}
-TableController.prototype.move = function($mouseDownEvent, $mouseUpEvent){
-	var startX = $mouseDownEvent.clientX;
-	var startY = $mouseDownEvent.clientY;
-
-	var currentX = $mouseDownEvent.clientX;
-	var currentY = $mouseDownEvent.clientY;
-
-	_this.table.move(e)
-}*/
 
 tc = new TableController();
