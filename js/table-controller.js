@@ -1,21 +1,90 @@
 function TableController(){
 	var _this = this;
-	_this.tables = rehydrateTables() || [];
+	_this.tables = _this.rehydrateTables(_this.retrieveTableData() || []);
 
-	//it puts the html on the screen
+$(function(){
 
+	var $wrapper = $(".wrapper")
 	//instantiate view model objects
+	_this.tableViewModels = _this.tables.map(function (item) {
+		$table = $(TableViewModel.toHtml(item)).appendTo($wrapper);
+		return new TableViewModel(item, $table);		
+	})
 
-
-	saveTables(_this.tables);
+})
+	//todo
+	
+	//saveTableData(_this.tables);
 			
 //	_this.$element.on("mousedown", ".js--moveHandle", _this.mouseDown)
 }
-TableController.prototype.rehydrateTables = function(){
+TableController.prototype.retrieveTableData = function(){
 	return localStorage.tables ? JSON.parse(localStorage.tables) : null;
 }
-TableController.prototype.saveTables = function(tables){
+TableController.prototype.saveTableData = function(tables){
 	localStorage.tables = JSON.stringify(tables);
+}
+TableController.prototype.rehydrateTables = function(tableData){
+	return tableData.map(function(table){
+		var columns = table.columns.map(function(column){
+			return new Column(column);
+		})
+		return new Table(table, columns);
+	})
+}
+
+TableController.prototype.sample = function(){
+	this.tables = this.rehydrateTables([
+		{
+			name: "Table Title",
+			_left: 200,
+			_top: 200,
+			columns: [
+				{
+					key: "pk",
+					name: "id"
+				},
+				{
+					name: "name"
+				},
+				{
+					key: "fk",
+					name: "foreign_id"
+				},
+				{
+					name: "other"
+				},
+				{
+					name: "thing"
+				}
+			]
+		},
+		{
+			name: "Other table",
+			_left: 10,
+			_top: 20,
+			columns: [
+				{
+					key: "pk",
+					name: "id"
+				},
+				{
+					name: "name"
+				},
+				{
+					key: "fk",
+					name: "foreign_id"
+				},
+				{
+					name: "other"
+				},
+				{
+					name: "thing"
+				}
+			]
+		}
+	]);
+	this.saveTableData(this.tables)
 }
 
 /*TableController.prototype.mouseDown = function($mouseDownEvent){
@@ -35,3 +104,5 @@ TableController.prototype.move = function($mouseDownEvent, $mouseUpEvent){
 
 	_this.table.move(e)
 }*/
+
+tc = new TableController();

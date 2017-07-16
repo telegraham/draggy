@@ -1,5 +1,11 @@
-function Table(rows){
+function Table(props, columns){
+  this._top = props._top
+  this._left = props._left
+  this._width = props._width
 
+  this.name = props.name;
+
+  this.columns = columns;
 }
 Table.prototype.top = function(param){
 	if (param) this._top = param;
