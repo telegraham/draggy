@@ -50,7 +50,7 @@ TableViewModel.prototype.animationCalc = function(){
   var acceleration = this.accelerationHelper.calculateAcceleration(this.accelerationWindowMs);
 
   return { "transform": "translate3d(" + this.deltaX +  "px, " + this.deltaY + "px, 0px) " 
-     + "skewX(" + acceleration.x * 200000 + "deg)" 
+     + "skewX(" + acceleration.x * -200000 + "deg)" 
      + " scaleY(" + (1 + acceleration.y * -2000) + ")" };
 }
 TableViewModel.prototype.animationRender = function(css){
