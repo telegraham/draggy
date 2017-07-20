@@ -62,8 +62,7 @@ TableViewModel.toHtml = function(model){
     var li = $("<li>");
     li.attr("class", item.key);
     li.append("<span class='key'></span>")
-    li.append("<span class='name'>" + item.name + "</span>")
-    li.append("<span class='edit'></span>")
+    li.append("<input type='text' class='name' value='" + item.name + "'></input>")
     li.append("<span class='sort'></span>")
     return li;
   })
