@@ -93,6 +93,10 @@
   border-color: rgba(100, 150, 255, .6);
   outline: none;
 }
+/* contenteditable */
+.name div, .name br {
+    display: inline-block;
+}
 
 .table li .edit::after {
   content: 'edit';
