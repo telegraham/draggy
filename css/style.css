@@ -43,7 +43,8 @@
   display: flex;
   position: relative;
 }
-.table li span {
+.table li > span,
+.table li > select {
   padding: 5px;
 }
 .table li .key {
@@ -58,11 +59,15 @@
 }
 .table li .name {
   font-weight: bold;
+  white-space: nowrap;
 }
 .table li .key,
 .table li .sort {
   width: 20px;
   text-align: center;
+}
+.table li .sort {
+  margin-left: auto;
 }
 .table li .dataType {
   -webkit-appearance: none;
@@ -71,15 +76,11 @@
 }
 .table li .name,
 .table li .dataType {
-  padding: 0px 6px;
   border: 2px solid transparent;
   font-family: serif;
   background: none;
   transition: background-color .25s, border-color .25s;
   margin: -1px;
-}
-.table li .name {
-  width: 100px;
 }
 .table li .name:hover,
 .table li .dataType:hover {

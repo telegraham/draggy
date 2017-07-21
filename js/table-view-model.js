@@ -62,7 +62,7 @@ TableViewModel.toHtml = function(model){
     var li = $("<li>");
     li.attr("class", item.key);
     li.append("<span class='key'></span>")
-    li.append("<input type='text' class='name' value='" + item.name + "'></input>")
+    li.append("<span class='name' contentEditable='true'>" + item.name + "</span>")
     var select = $("<select class='dataType'>");
     ["string", "int", "bit"].forEach(function(dt){
       select.append("<option value='" + dt + "'>" + dt + "</option>");
