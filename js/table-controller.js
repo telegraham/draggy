@@ -41,14 +41,15 @@ function TableController(){
 //	_this.$element.on("mousedown", ".js--moveHandle", _this.mouseDown)
 }
 
+//https://github.com/gergob/jsProxy/blob/master/04-onchange-object.js
 TableController.trackChange = function(obj, onChange) {
     const handler = {
-        set (obj, prop, value) {
+        set: function (obj, prop, value) {
             const oldVal = obj[prop];
             Reflect.set(obj, prop, value);
             onChange(obj, prop, oldVal, value);
         },
-        deleteProperty (obj, prop) {
+        deleteProperty: function (obj, prop) {
             const oldVal = obj[prop];
             Reflect.deleteProperty(obj, prop);
             onChange(obj, prop, oldVal, undefined);
