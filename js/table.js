@@ -3,6 +3,7 @@ function Table(props, columns){
   this._left = props._left
   this._width = props._width
 
+  this.id = props.id;
   this.name = props.name;
 
   this.columns = columns;

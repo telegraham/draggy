@@ -84,6 +84,12 @@ TableController.prototype.sample = function(){
 			]
 		}
 	]);
+	this.tables.forEach(function(table){
+		table.id = table.id || Randy.generate();
+		table.columns.forEach(function(column){
+			column.id = column.id || Randy.generate();
+		})
+	})
 	this.saveTableData(this.tables)
 }
 

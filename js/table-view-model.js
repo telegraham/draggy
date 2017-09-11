@@ -1,6 +1,13 @@
 function TableViewModel(model, element){
+  _this = this;
+
   this.$element = $(element);
 	this.model = model;
+
+  this.columns = model.columns.map(function(columnModel){
+    var $column = _this.$element.find("#" + ColumnViewModel.htmlId(columnModel.id));
+    return new ColumnViewModel(columnModel, $column)
+  })
 
   this.accelerationWindowMs = 10000;
 
@@ -57,23 +64,17 @@ TableViewModel.prototype.animationCalc = function(){
 TableViewModel.prototype.animationRender = function(css){
   this.$element.css(css);
 }
+TableViewModel.htmlId = function(modelId) {
+  return "table--" + modelId;
+}
 TableViewModel.toHtml = function(model){
   //todo
-  var cols = model.columns.map(function(item){
-    var li = $("<li>");
-    li.attr("class", item.key);
-    li.append("<span class='key'></span>")
-    li.append("<span class='name' contentEditable='true'>" + item.name + "</span>")
-    var select = $("<select class='dataType'>");
-    ["string", "int", "bit"].forEach(function(dt){
-      select.append("<option value='" + dt + "'>" + dt + "</option>");
-    });
-    li.append(select);
-    li.append("<span class='sort'></span>")
-    return li;
+  var cols = model.columns.map(function(col){
+    return ColumnViewModel.toHtml(col);
   })
 
   var table = $("<div>");
+  table.attr("id", TableViewModel.htmlId(model.id));
   table.attr("class", "table");
   table.css({
     top: model._top,
