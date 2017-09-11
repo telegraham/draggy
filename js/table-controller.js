@@ -3,7 +3,7 @@ function TableController(){
 	_this.tables = _this.rehydrateTables(_this.retrieveTableData() || []);
 
 	var tableProxies = _this.tables.map(function(tableModel){
-		return TableController.trackChange(tableModel, TableController.onChange);
+		return TableController.trackChange(tableModel, _this.saveTableData.bind(_this));
 	});
 
 	$(function(){
@@ -23,7 +23,7 @@ function TableController(){
 
 			//now columns
 			var columnProxies = tableViewModel.model.columns.map(function(columnModel){
-				return TableController.trackChange(columnModel, TableController.onChange);
+				return TableController.trackChange(columnModel, _this.saveTableData.bind(_this));
 			});
 
 			columnProxies.map(function(columnModelProxy){
@@ -56,16 +56,16 @@ TableController.trackChange = function(obj, onChange) {
     };
     return new Proxy(obj, handler);
 }
-TableController.onChange =  function (obj, prop, oldVal, newVal) {
-	console.log(`myObj.${prop} changed from ${oldVal} to ${newVal}`);
-};
+// TableController.prototype.onChange =  function (obj, prop, oldVal, newVal) {
+// 	console.log(`myObj.${prop} changed from ${oldVal} to ${newVal}`);
+// };
 
 
 TableController.prototype.retrieveTableData = function(){
 	return localStorage.tables ? JSON.parse(localStorage.tables) : null;
 }
-TableController.prototype.saveTableData = function(tables){
-	localStorage.tables = JSON.stringify(tables);
+TableController.prototype.saveTableData = function(){
+	localStorage.tables = JSON.stringify(this.tables);
 }
 TableController.prototype.rehydrateTables = function(tableData){
 	return tableData.map(function(table){

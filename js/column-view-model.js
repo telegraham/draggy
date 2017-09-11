@@ -1,8 +1,32 @@
 function ColumnViewModel(model, element){
+  var _this = this;
+
   this.$element = $(element);
 	this.model = model;
 
+  //manual binding
   this.$element.find(".key").on("click", this.toggleKeyType.bind(this));
+
+  //fancy
+  this.bindings = [
+      {
+        selector: ".name", 
+        propName: "name"
+      }, 
+      {
+        selector: ".dataType", 
+        propName: "dataType"
+      }
+  ].map(function(mapping){
+    var element = _this.$element.find(mapping.selector);
+
+    var setFn = function(newValue){
+      _this.model[mapping.propName] = newValue;
+    };
+    var getFn = function(){ return _this.model[mapping.propName]; }
+
+    return new Binding(element, setFn, getFn);
+  })
 
 }
 ColumnViewModel.prototype.toggleKeyType = function() {
@@ -18,7 +42,7 @@ ColumnViewModel.toHtml = function(model){
   li.addClass(model.key);
   li.attr("id", ColumnViewModel.htmlId(model.id));
   li.append("<span class='key'></span>")
-  li.append("<span class='name' contentEditable='true'>" + model.name + "</span>")
+  li.append("<input class='name' type='text' value='" + model.name + "'></input>")
   var select = $("<select class='dataType'>");
   ["string", "int", "bit"].forEach(function(dt){
     select.append("<option value='" + dt + "'>" + dt + "</option>");

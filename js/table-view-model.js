@@ -1,8 +1,18 @@
 function TableViewModel(model, element){
-  _this = this;
+  var _this = this;
 
   this.$element = $(element);
 	this.model = model;
+
+  var tableNameInput = this.$element.find(".tableName");
+  var setFn = function(newValue){
+    _this.model.name = newValue;
+  };
+  var getFn = function(){
+    return _this.model.name;
+  };
+  
+  this.binding = new Binding(tableNameInput, setFn, getFn);
 
   this.accelerationWindowMs = 10000;
 
@@ -76,7 +86,7 @@ TableViewModel.toHtml = function(model){
     left: model._left
   })
 
-  table.append("<h3 class='js--moveHandle'>" + model.name + "</h3>")
+  table.append("<h3 class='js--moveHandle'><input type='text' class='tableName' value='" + model.name + "'></input></h3>")
 
   var ol = $("<ol>");
   cols.forEach(function(col){
