@@ -17,8 +17,8 @@ function TableViewModel(model, element){
                                               this.animationRender.bind(this));
 }
 TableViewModel.prototype.onDown = function(downX, downY){
-  this.accelerationHelper.resetPositions();
-  this.accelerationHelper.recordPosition(0, 0);
+  //this.accelerationHelper.resetPositions();
+  //this.accelerationHelper.recordPosition(0, 0);
 
   this.deltaX = 0;
   this.deltaY = 0;
@@ -26,8 +26,8 @@ TableViewModel.prototype.onDown = function(downX, downY){
   this.animationHelper.start();
 }
 TableViewModel.prototype.onDrag = function(deltaX, deltaY){
-  this.accelerationHelper.recordPosition(deltaX, deltaY);
-  this.accelerationHelper.cleanUpPositions(this.accelerationWindowMs);
+  //this.accelerationHelper.recordPosition(deltaX, deltaY);
+  //this.accelerationHelper.cleanUpPositions(this.accelerationWindowMs);
 
   this.deltaX = deltaX;
   this.deltaY = deltaY;
@@ -44,14 +44,15 @@ TableViewModel.prototype.onDrop = function(deltaX, deltaY){
     top: this.model.top(),
     left: this.model.left()
   });
-  this.accelerationHelper.resetPositions();
+  //this.accelerationHelper.resetPositions();
 }
 TableViewModel.prototype.animationCalc = function(){
-  var acceleration = this.accelerationHelper.calculateAcceleration(this.accelerationWindowMs);
+  //var acceleration = this.accelerationHelper.calculateAcceleration(this.accelerationWindowMs);
 
   return { "transform": "translate3d(" + this.deltaX +  "px, " + this.deltaY + "px, 0px) " 
-     + "skewX(" + acceleration.x * -200000 + "deg)" 
-     + " scaleY(" + (1 + acceleration.y * -2000) + ")" };
+     //+ "skewX(" + acceleration.x * -200000 + "deg)" 
+     //+ " scaleY(" + (1 + acceleration.y * -2000) + ")" 
+   };
 }
 TableViewModel.prototype.animationRender = function(css){
   this.$element.css(css);
