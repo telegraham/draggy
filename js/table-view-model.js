@@ -4,11 +4,6 @@ function TableViewModel(model, element){
   this.$element = $(element);
 	this.model = model;
 
-  this.columns = model.columns.map(function(columnModel){
-    var $column = _this.$element.find("#" + ColumnViewModel.htmlId(columnModel.id));
-    return new ColumnViewModel(columnModel, $column)
-  })
-
   this.accelerationWindowMs = 10000;
 
   this.draggable = new Draggable({

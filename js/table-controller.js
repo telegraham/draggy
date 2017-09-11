@@ -2,22 +2,65 @@ function TableController(){
 	var _this = this;
 	_this.tables = _this.rehydrateTables(_this.retrieveTableData() || []);
 
-$(function(){
+	var tableProxies = _this.tables.map(function(tableModel){
+		return TableController.trackChange(tableModel, TableController.onChange);
+	});
 
-	var $wrapper = $(".wrapper")
-	//instantiate view model objects
-	_this.tableViewModels = _this.tables.map(function (item) {
-		$table = $(TableViewModel.toHtml(item)).appendTo($wrapper);
-		return new TableViewModel(item, $table);		
+	$(function(){
+
+		var $wrapper = $(".wrapper")
+
+		//instantiate view model objects
+		_this.tableViewModels = tableProxies.map(function(tableProxy) {
+			var $table = $(TableViewModel.toHtml(tableProxy));
+			return new TableViewModel(tableProxy, $table);		
+		})
+
+		_this.tableViewModels.forEach(function(tableViewModel){
+
+			//stick tables in the DOM
+			tableViewModel.$element.appendTo($wrapper);
+
+			//now columns
+			var columnProxies = tableViewModel.model.columns.map(function(columnModel){
+				return TableController.trackChange(columnModel, TableController.onChange);
+			});
+
+			columnProxies.map(function(columnModelProxy){
+			    var $column = tableViewModel.$element.find("#" + ColumnViewModel.htmlId(columnModelProxy.id));
+			    return new ColumnViewModel(columnModelProxy, $column)
+		   	});
+
+		})
+
 	})
-
-})
 	//todo
 	
 	//saveTableData(_this.tables);
 			
 //	_this.$element.on("mousedown", ".js--moveHandle", _this.mouseDown)
 }
+
+TableController.trackChange = function(obj, onChange) {
+    const handler = {
+        set (obj, prop, value) {
+            const oldVal = obj[prop];
+            Reflect.set(obj, prop, value);
+            onChange(obj, prop, oldVal, value);
+        },
+        deleteProperty (obj, prop) {
+            const oldVal = obj[prop];
+            Reflect.deleteProperty(obj, prop);
+            onChange(obj, prop, oldVal, undefined);
+        }
+    };
+    return new Proxy(obj, handler);
+}
+TableController.onChange =  function (obj, prop, oldVal, newVal) {
+	console.log(`myObj.${prop} changed from ${oldVal} to ${newVal}`);
+};
+
+
 TableController.prototype.retrieveTableData = function(){
 	return localStorage.tables ? JSON.parse(localStorage.tables) : null;
 }
