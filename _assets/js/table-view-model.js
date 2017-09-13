@@ -1,3 +1,7 @@
+//= require binding
+//= require draggable
+//= require animation-helper
+
 function TableViewModel(model, element){
   var _this = this;
 
@@ -24,7 +28,7 @@ function TableViewModel(model, element){
     handle: ".js--moveHandle"
   });
 
-  this.accelerationHelper = new AccelerationHelper();
+  //this.accelerationHelper = new AccelerationHelper();
   this.animationHelper = new AnimationHelper(this.animationCalc.bind(this), 
                                               this.animationRender.bind(this));
 }
@@ -36,6 +40,7 @@ TableViewModel.prototype.onDown = function(downX, downY){
   this.deltaY = 0;
 
   this.animationHelper.start();
+  this.notifyColumnsDragStart();
 }
 TableViewModel.prototype.onDrag = function(deltaX, deltaY){
   //this.accelerationHelper.recordPosition(deltaX, deltaY);
@@ -45,6 +50,17 @@ TableViewModel.prototype.onDrag = function(deltaX, deltaY){
   this.deltaY = deltaY;
 
   this.animationHelper.nudge();
+  this.notifyColumnsDrag();
+}
+TableViewModel.prototype.notifyColumnsDragStart = function(){
+  this.columns.forEach(function(column){
+    column.notifyDragStart();
+  })
+}
+TableViewModel.prototype.notifyColumnsDrag = function(){
+  this.columns.forEach(function(column){
+    column.notifyDrag();
+  })
 }
 TableViewModel.prototype.onDrop = function(deltaX, deltaY){
   this.model.move(deltaX, deltaY);

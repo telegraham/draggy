@@ -1,7 +1,7 @@
 function Table(props, columns){
   this._top = props._top
   this._left = props._left
-  this._width = props._width
+  this._width = props._width // TODO get rid of this and put it in the view model
 
   this.id = props.id;
   this.name = props.name;

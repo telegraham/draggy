@@ -1,8 +1,14 @@
+//= require binding
+
 function ColumnViewModel(model, element){
   var _this = this;
 
   this.$element = $(element);
 	this.model = model;
+
+  this.relations = [];
+
+  this.id = model.id; //for the view model factory
 
   //manual binding
   this.$element.find(".key").on("click", this.toggleKeyType.bind(this));
@@ -29,10 +35,27 @@ function ColumnViewModel(model, element){
   })
 
 }
+ColumnViewModel.prototype.relationTargetCoordinates = function(){
+  var offs = this.$element.offset();
+  return {
+    x: offs.left,
+    y: offs.top
+  };
+}
 ColumnViewModel.prototype.toggleKeyType = function() {
   this.model.key = Column.nextKeyType(this.model.key);
   this.$element.removeClass(Column.KEY_TYPES.join(" "))
   this.$element.addClass(this.model.key);
+}
+ColumnViewModel.prototype.notifyDrag = function(){
+  this.relations.forEach(function(relation){
+    relation.notifyDrag();
+  });
+}
+ColumnViewModel.prototype.notifyDragStart = function(){
+  this.relations.forEach(function(relation){
+    relation.notifyDragStart();
+  });
 }
 ColumnViewModel.htmlId = function(modelId){
   return "column--" + modelId;
