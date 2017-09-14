@@ -16,11 +16,11 @@ function ColumnViewModel(model, element){
   //fancy
   this.bindings = [
       {
-        selector: ".name", 
+        selector: ".name",
         propName: "name"
-      }, 
+      },
       {
-        selector: ".dataType", 
+        selector: ".dataType",
         propName: "dataType"
       }
   ].map(function(mapping){
@@ -37,9 +37,10 @@ function ColumnViewModel(model, element){
 }
 ColumnViewModel.prototype.relationTargetCoordinates = function(){
   var offs = this.$element.offset();
+  var height = this.$element.outerHeight();
   return {
     x: offs.left,
-    y: offs.top
+    y: offs.top + height / 2
   };
 }
 ColumnViewModel.prototype.toggleKeyType = function() {
