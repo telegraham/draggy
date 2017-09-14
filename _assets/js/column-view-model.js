@@ -69,7 +69,10 @@ ColumnViewModel.toHtml = function(model){
   li.append("<input class='name' type='text' value='" + model.name + "'></input>")
   var select = $("<select class='dataType'>");
   ["string", "int", "bit"].forEach(function(dt){
-    select.append("<option value='" + dt + "'>" + dt + "</option>");
+    var option = $("<option value='" + dt + "'>" + dt + "</option>");
+    if (model.dataType == dt)
+      option.attr("selected", "selected")
+    select.append(option);
   });
   li.append(select);
   li.append("<span class='sort'></span>")
