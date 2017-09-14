@@ -97,3 +97,19 @@ html, body {
 .table li .sort::after {
   content: "=";
 }
+
+
+/* delete me */
+.sample {
+  position: absolute;
+  background: orange;
+  border: 1px solid white;
+  padding: 20px;
+  top: 10px;
+  right: 10px;
+  box-shadow: 10px 10px 50px rgba(0,0,0,.5);
+  border-radius: 5px;
+  color: #fff;
+  font-weight: bold;
+  z-index: 500;
+}
