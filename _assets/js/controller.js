@@ -22,9 +22,9 @@ function Controller(persistence, schemaFactory){
       _this.schemaViewModel = schemaViewModelFactory.build(_this.schema)
       _this.schemaViewModel.firstDraw($(".wrapper"));
     });
-    
+
   }
-  
+
 }
 
 Controller.prototype.saveSchema = function(){
@@ -34,7 +34,9 @@ Controller.prototype.saveSchema = function(){
 
 
 Controller.prototype.sample = function(){
-  this.schema = SchemaFactory.build({ tables: [
+  this.schema = SchemaFactory.build({
+    relations: [],
+    tables: [
     {
       name: "Table Title",
       _left: 200,
