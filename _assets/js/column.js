@@ -4,6 +4,7 @@ function Column(props){
   _this.id = props.id
   _this.key = props.key
   _this.name = props.name
+  _this.dataType = props.dataType
 }
 Column.KEY_TYPES = ["pk", "fk", null];
 Column.nextKeyType = function(oldValue) {
