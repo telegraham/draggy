@@ -16,11 +16,13 @@ function Controller(persistence, schemaFactory){
 
     var onChange = this.saveSchema.bind(this);
 
-    $(function(){ //this, when combined with the containing if, will break adding a table big time
-      var paper = Raphael("svgWrapper", "100%", "100%");
-      var schemaViewModelFactory = new SchemaViewModelFactory(onChange, paper);
-      _this.schemaViewModel = schemaViewModelFactory.build(_this.schema)
-      _this.schemaViewModel.firstDraw($(".wrapper"));
+    var schemaViewModelFactory = new SchemaViewModelFactory(onChange);
+    _this.schemaViewModel = schemaViewModelFactory.build(_this.schema)
+
+    $(function(){
+      this.paper = Raphael("svgWrapper", "100%", "100%");
+      this.wrapper = $(".wrapper")
+      _this.schemaViewModel.firstDraw(this.wrapper, this.paper);
     });
 
   }

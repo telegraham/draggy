@@ -9,9 +9,9 @@ function SchemaViewModelFactory(onChange, paper){
   this.paper = paper;
 }
 SchemaViewModelFactory.prototype.build = function(schema){
-  
+
   var tableViewModels = SchemaViewModelFactory.buildTables(schema.tables, this.onChange);
-  
+
   //now columns
   tableViewModels.forEach(function(tableViewModel){
     tableViewModel.columns = SchemaViewModelFactory.buildColumns(tableViewModel, this.onChange)
@@ -37,7 +37,7 @@ SchemaViewModelFactory.buildTables = function(tables, onChange){
 
   return tableProxies.map(function(tableProxy) {
     var $table = $(TableViewModel.toHtml(tableProxy));
-    return new TableViewModel(tableProxy, $table);    
+    return new TableViewModel(tableProxy, $table);
   })
 }
 SchemaViewModelFactory.buildColumns = function(tableViewModel, onChange) {
@@ -60,7 +60,6 @@ SchemaViewModelFactory.buildRelations = function(relations, columns, paper){
       primaryKeyColumn: columns[relation.primaryKeyId],
       foreignKeyColumn: columns[relation.foreignKeyId]
     });
-    relationViewModel.path = paper.path(relationViewModel.animationCalc());
     return relationViewModel;
   });
 
