@@ -10,11 +10,13 @@ function SchemaViewModelFactory(onChange, paper){
 }
 SchemaViewModelFactory.prototype.build = function(schema){
 
+  var _this = this;
+
   var tableViewModels = SchemaViewModelFactory.buildTables(schema.tables, this.onChange);
 
   //now columns
   tableViewModels.forEach(function(tableViewModel){
-    tableViewModel.columns = SchemaViewModelFactory.buildColumns(tableViewModel, this.onChange)
+    tableViewModel.columns = SchemaViewModelFactory.buildColumns(tableViewModel, _this.onChange)
   })
 
   //gross
