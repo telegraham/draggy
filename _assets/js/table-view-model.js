@@ -1,6 +1,22 @@
+//= require binding
+//= require draggable
+//= require animation-helper
+
 function TableViewModel(model, element){
+  var _this = this;
+
   this.$element = $(element);
 	this.model = model;
+
+  var tableNameInput = this.$element.find(".tableName");
+  var setFn = function(newValue){
+    _this.model.name = newValue;
+  };
+  var getFn = function(){
+    return _this.model.name;
+  };
+  
+  this.binding = new Binding(tableNameInput, setFn, getFn);
 
   this.accelerationWindowMs = 10000;
 
@@ -12,7 +28,7 @@ function TableViewModel(model, element){
     handle: ".js--moveHandle"
   });
 
-  this.accelerationHelper = new AccelerationHelper();
+  //this.accelerationHelper = new AccelerationHelper();
   this.animationHelper = new AnimationHelper(this.animationCalc.bind(this), 
                                               this.animationRender.bind(this));
 }
@@ -24,6 +40,7 @@ TableViewModel.prototype.onDown = function(downX, downY){
   this.deltaY = 0;
 
   this.animationHelper.start();
+  this.notifyColumnsDragStart();
 }
 TableViewModel.prototype.onDrag = function(deltaX, deltaY){
   //this.accelerationHelper.recordPosition(deltaX, deltaY);
@@ -33,6 +50,17 @@ TableViewModel.prototype.onDrag = function(deltaX, deltaY){
   this.deltaY = deltaY;
 
   this.animationHelper.nudge();
+  this.notifyColumnsDrag();
+}
+TableViewModel.prototype.notifyColumnsDragStart = function(){
+  this.columns.forEach(function(column){
+    column.notifyDragStart();
+  })
+}
+TableViewModel.prototype.notifyColumnsDrag = function(){
+  this.columns.forEach(function(column){
+    column.notifyDrag();
+  })
 }
 TableViewModel.prototype.onDrop = function(deltaX, deltaY){
   this.model.move(deltaX, deltaY);
@@ -57,30 +85,24 @@ TableViewModel.prototype.animationCalc = function(){
 TableViewModel.prototype.animationRender = function(css){
   this.$element.css(css);
 }
+TableViewModel.htmlId = function(modelId) {
+  return "table--" + modelId;
+}
 TableViewModel.toHtml = function(model){
   //todo
-  var cols = model.columns.map(function(item){
-    var li = $("<li>");
-    li.attr("class", item.key);
-    li.append("<span class='key'></span>")
-    li.append("<span class='name' contentEditable='true'>" + item.name + "</span>")
-    var select = $("<select class='dataType'>");
-    ["string", "int", "bit"].forEach(function(dt){
-      select.append("<option value='" + dt + "'>" + dt + "</option>");
-    });
-    li.append(select);
-    li.append("<span class='sort'></span>")
-    return li;
+  var cols = model.columns.map(function(col){
+    return ColumnViewModel.toHtml(col);
   })
 
   var table = $("<div>");
+  table.attr("id", TableViewModel.htmlId(model.id));
   table.attr("class", "table");
   table.css({
     top: model._top,
     left: model._left
   })
 
-  table.append("<h3 class='js--moveHandle'>" + model.name + "</h3>")
+  table.append("<h3 class='js--moveHandle'><input type='text' class='tableName' value='" + model.name + "'></input></h3>")
 
   var ol = $("<ol>");
   cols.forEach(function(col){
