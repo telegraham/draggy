@@ -40,7 +40,7 @@ Controller.prototype.sample = function(){
     relations: [],
     tables: [
     {
-      name: "Table Title",
+      name: "Table won",
       _left: 200,
       _top: 200,
       columns: [
@@ -64,7 +64,7 @@ Controller.prototype.sample = function(){
       ],
     },
     {
-      name: "Other table",
+      name: "Table tú",
       _left: 10,
       _top: 20,
       columns: [
@@ -94,6 +94,6 @@ Controller.prototype.sample = function(){
       column.id = column.id || Randy.generate();
     })
   })
-  this.schema.relations = [{ primaryKeyId: this.schema.tables[0].columns[0], foreignKeyId: this.schema.tables[1].columns[2]}] //gross -- this has to match relation exactly but I don't wanna import.
+  this.schema.relations = [{ primaryKeyId: this.schema.tables[0].columns[0].id, foreignKeyId: this.schema.tables[1].columns[2].id}] //gross -- this has to match relation exactly but I don't wanna import.
   this.saveSchema();
 }
